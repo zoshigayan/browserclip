@@ -8,7 +8,11 @@ function appendElement(paste) {
   const top = Math.round(Math.random() * window.innerWidth);
   const left = Math.round(Math.random() * window.innerHeight);
   const elem = document.createElement("div");
-  elem.innerText = paste;
+  elem.className = "element"
+  elem.innerHTML = `
+    <button class="element__close">☓</button>
+    <span class="element__content">${paste}</span>
+  `;
   elem.style.position = "absolute";
   elem.style.top = `${top}px`;
   elem.style.left = `${left}px`;

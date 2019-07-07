@@ -5,3 +5,30 @@
   overflow-x: hidden;
   overflow-y: scroll;
 }
+
+.element {
+  position: relative;
+  border: solid 1px #000;
+  padding: 32px;
+  background-color: #fff;
+  box-shadow: 4px 4px 0 0 rgba(0,0,0,0.2);
+  cursor: move;
+}
+
+.element .element__close {
+  position: absolute;
+  top: 0;
+  right: 0;
+  display: block;
+  width: 32px;
+  height: 32px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  user-select: none;
+}
+
+.element .element__content {
+  cursor: default;
+  user-select: none;
+}
