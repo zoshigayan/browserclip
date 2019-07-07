@@ -1,0 +1,9 @@
+{
+  "name": "browserclip",
+  "version": "1.0",
+  "description": "Clip Anything in browser",
+  "manifest_version": 2,
+  "chrome_url_overrides": {
+    "newtab": "index.html"
+  }
+}
