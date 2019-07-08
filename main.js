@@ -1,26 +1,43 @@
-function handlePaste(e) {
-  const paste = (e.clipboardData || window.clipboardData).getData("text");
-  appendElement(paste);
-  e.preventDefault();
+var stageWidth = 1000;
+var stageHeight = 1000;
+var stage = new Konva.Stage({
+  container: 'container',
+  width: stageWidth,
+  height: stageHeight,
+});
+
+var layer = new Konva.Layer();
+
+var circle = new Konva.Circle({
+  x: stage.width() / 2,
+  y: stage.height() / 2,
+  radius: 70,
+  fill: 'red',
+  stroke: 'black',
+  strokeWidth: 4,
+  draggable: true,
+});
+
+layer.add(circle);
+stage.add(layer);
+layer.draw();
+
+document.addEventListener("keydown", (e) => {
+  if (e.keyCode === 86 && ((e.ctrlKey && !e.metaKey) || (!e.ctrlKey && e.metaKey))) {
+    // TODO: handling paste
+  }
+})
+
+function fitStageIntoParentContainer() {
+  var container = document.getElementById('stage-parent');
+  var containerWidth = container.offsetWidth;
+  var scale = containerWidth / stageWidth;
+
+  stage.width(stageWidth * scale);
+  stage.height(stageHeight * scale);
+  stage.scale({ x: scale, y: scale });
+  stage.draw();
 }
 
-function appendElement(paste) {
-  const top = Math.round(Math.random() * window.innerWidth);
-  const left = Math.round(Math.random() * window.innerHeight);
-  const elem = document.createElement("div");
-  elem.className = "element"
-  elem.innerHTML = `
-    <button class="element__close">☓</button>
-    <span class="element__content">${paste}</span>
-  `;
-  elem.style.position = "absolute";
-  elem.style.top = `${top}px`;
-  elem.style.left = `${left}px`;
-
-  document.getElementById("container").appendChild(elem);
-}
-
-window.onload = function() {
-  const $text = document.getElementById("text");
-  $text.addEventListener("paste", handlePaste);
-}
+fitStageIntoParentContainer();
+window.addEventListener('resize', fitStageIntoParentContainer);
