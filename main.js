@@ -22,12 +22,6 @@ layer.add(circle);
 stage.add(layer);
 layer.draw();
 
-document.addEventListener("keydown", (e) => {
-  if (e.keyCode === 86 && ((e.ctrlKey && !e.metaKey) || (!e.ctrlKey && e.metaKey))) {
-    // TODO: handling paste
-  }
-})
-
 function fitStageIntoParentContainer() {
   var container = document.getElementById('stage-parent');
   var containerWidth = container.offsetWidth;
@@ -41,3 +35,42 @@ function fitStageIntoParentContainer() {
 
 fitStageIntoParentContainer();
 window.addEventListener('resize', fitStageIntoParentContainer);
+
+function makeElem(text) {
+  const group = new Konva.Group({
+    x: 200,
+    y: 50,
+    draggable: true,
+  });
+
+  const container = new Konva.Rect({
+    x: 0,
+    y: 0,
+    width: 200,
+    height: 50,
+    fill: "white",
+    stroke: "black",
+    strokeWidth: 4,
+  })
+
+  const content = new Konva.Text({
+    x: 0,
+    y: 0,
+    text: text,
+    fontSize: 13,
+  })
+
+  group.add(container);
+  group.add(content);
+
+
+  return group;
+}
+
+document.addEventListener("paste", (e) => {
+  e.preventDefault();
+  const text = e.clipboardData.getData("text");
+  const elem = makeElem(text);
+  layer.add(elem);
+  layer.draw();
+})
