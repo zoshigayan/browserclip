@@ -52,14 +52,59 @@ function makeElem(text) {
   group.add(container);
   group.add(content);
 
+  layer.add(group);
+  layer.draw();
+}
 
-  return group;
+function makeImageElem(uri) {
+  const group = new Konva.Group({
+    width: 100,
+    height: 100,
+    draggable: true,
+  });
+
+  const container = new Konva.Rect({
+    x: 0,
+    y: 0,
+    width: 100,
+    height: 100,
+    fill: "white",
+    stroke: "black",
+    strokeWidth: 4,
+  })
+
+  const pasteImage = new Konva.Image({
+    width: 100,
+    height: 100
+  });
+
+  group.add(container);
+  group.add(pasteImage);
+  layer.add(group);
+  layer.draw();
+
+  var imageObj = new Image();
+  imageObj.onload = function() {
+    pasteImage.image(imageObj);
+  };
+  imageObj.src = uri;
 }
 
 document.addEventListener("paste", (e) => {
-  e.preventDefault();
+  const files = e.clipboardData.files
+  // 画像だった場合
+  if (files.length !== 0) {
+    const file = files.item(0);
+    const reader = new FileReader();
+    reader.onload = (e) => {
+      const uri = e.target.result;
+      makeImageElem(uri);
+    }
+    reader.readAsDataURL(file);
+    return
+  }
+
+  // テキストだった場合
   const text = e.clipboardData.getData("text");
-  const elem = makeElem(text);
-  layer.add(elem);
-  layer.draw();
+  makeElem(text);
 })
